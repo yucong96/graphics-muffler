@@ -1,0 +1,12 @@
+# This is the config file for muffler
+
+# freq: 400
+# speed: 340
+# rho: 1.29
+# p0_real: 2
+# p0_imag: 0
+inlet: 0 1 0 0
+outlet: 0 1 0 -1
+
+end
+# END

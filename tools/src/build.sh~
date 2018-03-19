@@ -1,0 +1,3 @@
+#!/bin/bash
+
+g++ -o ../geo_gen geo_gen.cpp
