@@ -41,6 +41,7 @@ Here, {model-name} can be "tiny".
 ## Governing Equation and Boundary Condition
 
 The governing equation of acoustic sound is a Helmholzs equation:
+\bigtriangleup p - \frac{\omega^2}{c^2} p = 0
 <img src="https://latex.codecogs.com/gif.latex?\bigtriangleup p - \frac{\omega^2}{c^2} p = 0"/>
 
 where 
@@ -50,6 +51,7 @@ where
 <img src="https://latex.codecogs.com/gif.latex?c"/> denotes the sound speed in the particular media.
 
 There are three kinds of boundary conditions. On the hard wall, the boundary condition is
+\bigtriangledown p \cdot n = 0
 <img src="https://latex.codecogs.com/gif.latex?\bigtriangledown"/> 
 <img src="https://latex.codecogs.com/gif.latex?p"/> 
 <img src="https://latex.codecogs.com/gif.latex?\cdot"/> 
@@ -62,12 +64,14 @@ where
 <img src="https://latex.codecogs.com/gif.latex?n"/> denotes the normal direction of the wall.
 
 At the outlet of muffler, we only consider an outcoming wave, so the boundary condition is
+\bigtriangledown p \cdot n + \frac{i \omega}{c}p = 0
 <img src="https://latex.codecogs.com/gif.latex?\bigtriangledown p \cdot n + \frac{i \omega}{c}p = 0"/>
 
 where
 <img src="https://latex.codecogs.com/gif.latex?i"/> is the imagarinary unit.
 
 At the inlet of muffler, the sound wave is a combination of incoming wave and outcoming wave, so the boundary condition is
+\bigtriangledown p \cdot n + \frac{i \omega}{c}p - \frac{2 i \omega}{c}p_0 = 0
 <img src="https://latex.codecogs.com/gif.latex?\bigtriangledown p \cdot n + \frac{i \omega}{c}p - \frac{2 i \omega}{c}p_0 = 0"/>
 
 where
