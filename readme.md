@@ -51,13 +51,13 @@ where
 <img src="https://latex.codecogs.com/gif.latex?c"/> denotes the sound speed in the particular media.
 
 There are three kinds of boundary conditions. On the hard wall, the boundary condition is
-\bigtriangledown p \cdot n = 0
-<img src="https://latex.codecogs.com/gif.latex?\bigtriangledown"/> 
-<img src="https://latex.codecogs.com/gif.latex?p"/> 
-<img src="https://latex.codecogs.com/gif.latex?\cdot"/> 
-<img src="https://latex.codecogs.com/gif.latex?n"/> 
-<img src="https://latex.codecogs.com/gif.latex?="/> 
-<img src="https://latex.codecogs.com/gif.latex?0"/>
+
+ <img src="https://latex.codecogs.com/gif.latex?\bigtriangledown"/>
+ <img src="https://latex.codecogs.com/gif.latex?p"/>
+ <img src="https://latex.codecogs.com/gif.latex?\cdot"/>
+ <img src="https://latex.codecogs.com/gif.latex?n"/>
+ <img src="https://latex.codecogs.com/gif.latex?="/>
+ <img src="https://latex.codecogs.com/gif.latex?0"/>
 
 where
 <img src="https://latex.codecogs.com/gif.latex?\bigtriangledown"/> denotes the gradient,
