@@ -31,6 +31,7 @@ private:
                const std::vector< std::set<VolumeIndex> > &ring_1_v,
                const std::vector< std::set<FaceIndex> > &ring_1_f,
                const NodeIndex &n, const double multiplier, const int flag = REAL);
+  void surface_laplace(const std::vector<Face> &f_set, const std::vector<std::set<FaceIndex>> &surface_node_near_f, const NodeIndex &n, const double multiplier, const int flag = REAL);
   void own(const NodeIndex& n, const double multiplier, const int flag = REAL);
   void constance(const double _constant);
 };

@@ -99,6 +99,31 @@ void CoeffItem::laplace(const vector<Volume> &v_set, const vector<Face> &f_set,
 	}
 }
 
+void CoeffItem::surface_laplace(const vector<Face> &f_set, const vector<set<FaceIndex>> &surface_node_near_f, const NodeIndex &n, const double multiplier, const int flag) {
+	assert(surface_node_near_f[n].size() > 0); // n should be in the surface
+
+	double area = 0;
+	for (set<FaceIndex>::iterator it = surface_node_near_f[n].begin(); it != surface_node_near_f[n].end(); it++) {
+		Face f = f_set[*it];
+		area += utiltools.area(f);
+	}
+	area /= 4;
+
+	for (set<FaceIndex>::iterator it = surface_node_near_f[n].begin(); it != surface_node_near_f[n].end(); it++) {
+		Face f = f_set[*it];
+		for (int i = 0; i < FACE_NODE_NUM; i++) {
+			if (f[i] == n) {
+				double cot1 = utiltools.cot(f, f[(i + 1) % FACE_NODE_NUM]);
+				insert(f[(i + 2) % FACE_NODE_NUM], multiplier * cot1 / (2 * area), flag);
+				double cot2 = utiltools.cot(f, f[(i + 2) % FACE_NODE_NUM]);
+				insert(f[(i + 1) % FACE_NODE_NUM], multiplier * cot2 / (2 * area), flag);
+				insert(f[i], -multiplier * (cot1 + cot2) / (2 * area), flag);
+				break;
+			}
+		}
+	}
+}
+
 void CoeffItem::own(const NodeIndex& n, const double multiplier, int flag) {
 	insert(n, multiplier, flag);
 }

@@ -60,6 +60,36 @@ double UtilTools::volume(const Volume &v) const {
   return volume_res;
 }
 
+double UtilTools::cos(const Face &f, const NodeIndex& n) const {
+  assert(f[0] < n_set.rows() && f[1] < n_set.rows() &&
+    f[2] < n_set.rows());
+
+  double cosine = INF;
+  for (int i = 0; i < FACE_NODE_NUM; i++) {
+    if (f[i] == n) {
+      Vector3d e1 = n_set.row(f[(i + 1) % FACE_NODE_NUM]) - n_set.row(f[i]);
+      Vector3d e2 = n_set.row(f[(i + 2) % FACE_NODE_NUM]) - n_set.row(f[i]);
+      cosine = e1.dot(e2) / sqrt(e1.dot(e1) * e2.dot(e2));
+      break;
+    }
+  }
+  if (cosine == INF) {
+    assert(0); // UtilTools::cos(), node is not in the face.
+  }
+  return cosine;
+}
+
+double UtilTools::cot(const Face &f, const NodeIndex& n) const {
+  assert(f[0] < n_set.rows() && f[1] < n_set.rows() &&
+    f[2] < n_set.rows());
+
+  double cosine = cos(f, n);
+  double sine = sqrt(1 - cosine*cosine);
+  double cotan = 1.0 * cosine / sine;
+  return cotan;
+}
+
+
 bool UtilTools::in_plain(const NodeIndex &n, const Plain &p) const {
 
   // compute ax+by+cz+d

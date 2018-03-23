@@ -327,6 +327,23 @@ void DataFiller::getNodeType(const int &n_num, const vector<Face> &f_set,
 #endif
 }
 
+void DataFiller::getSurfNodeNearFace(const int& n_num, const vector<Face> &f_set, const vector<ElementType>& f_type, vector<set<FaceIndex>>& surf_node_near_f) {
+	surf_node_near_f.reserve(n_num);
+	for (int i = 0; i < n_num; i++) {
+		set<FaceIndex> _set;
+		surf_node_near_f.push_back(_set);
+	}
+
+	for (int i = 0; i < f_set.size(); i++) {
+		if (f_type[i] == HARD || f_type[i] == INLET || f_type[i] == OUTLET) {
+			Face f = f_set[i];
+			for (int j = 0; j < FACE_NODE_NUM; j++) {
+				surf_node_near_f[j].insert(i);
+			}
+		}
+	}
+}
+
 #ifdef TEST
 void DataFiller::getNodeTypeVec(const vector<ElementType>& n_type, VectorXd& n_type_vec) {
   n_type_vec.resize(n_type.size());

@@ -46,6 +46,7 @@ public:
 	void getNodeType(const int& n_num, const std::vector<Face> &f_set,
 		const std::vector<ElementType> &f_type,
 		std::vector<ElementType> &n_type);
+	void getSurfNodeNearFace(const int& n_num, const std::vector<Face> &f_set, const std::vector<ElementType>& f_type, std::vector<std::set<FaceIndex>>& surf_node_near_n);
 #ifdef TEST
 	void getNodeTypeVec(const std::vector<ElementType>& n_type, Eigen::VectorXd& n_type_vec);
 #endif

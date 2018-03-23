@@ -24,7 +24,7 @@ void CoeffMatrix::computeEquationNum(const vector<ElementType>& f_type, const ve
   }
   
   for (int i = 0; i < n_type.size(); i++) {
-    if (n_type[i] == INNER) { // || n_type[i] == HARD) {
+    if (n_type[i] == INNER || n_type[i] == HARD) {
       eq_num++;
     }
     if (n_type[i] == INLET) {

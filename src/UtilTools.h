@@ -17,6 +17,8 @@ public:
   Eigen::Vector3d norm_vec(const Face &f, const NodeIndex &n) const;
   double area(const Face &f) const;
   double volume(const Volume &v) const;
+  double cos(const Face &f, const NodeIndex& n) const;
+  double cot(const Face &f, const NodeIndex& n) const;
   bool in_plain(const NodeIndex &n, const Plain &p) const;
 };
 

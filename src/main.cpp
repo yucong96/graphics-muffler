@@ -42,6 +42,7 @@ void pipeline(const std::string default_config_file,
 	double omega;
 	double rho;
 	double impedance;
+	double wavenum;
 	double p0_real, p0_imag;
 
 	Plain inlet;
@@ -57,6 +58,7 @@ void pipeline(const std::string default_config_file,
 	checkError("loading config");
 	omega = 2 * PI * freq;
 	impedance = rho * speed;
+	wavenum = omega / speed;
 
 #ifdef TEST
 	std::cout << "freq = " << freq << std::endl;
@@ -77,6 +79,8 @@ void pipeline(const std::string default_config_file,
 
 	std::vector<std::set<NodeIndex>> face_near_n;
 	std::vector<std::set<VolumeIndex>> face_near_v;
+
+	std::vector<std::set<FaceIndex>> surface_node_near_f;
 
 	std::vector<ElementType> f_type;
 	std::vector<ElementType> n_type;
@@ -104,6 +108,7 @@ void pipeline(const std::string default_config_file,
 	filler.getOneRingFace(n_num, face_near_n, ring_1_f);
 	filler.getFaceType(inlet, outlet, f_set, face_near_n, f_type);
 	filler.getNodeType(n_num, f_set, f_type, n_type);
+	filler.getSurfNodeNearFace(n_num, f_set, f_type, surface_node_near_f);
 #ifdef TEST
 	filler.getNodeTypeVec(n_type, n_type_vec);
 #endif
@@ -163,26 +168,16 @@ void pipeline(const std::string default_config_file,
 #endif
 	// inner part: \laplace p + omega^2 / speed^2 * p = 0
 	for (int i = 0; i < n_type.size(); i++) {
-	  //std::cout << n_type[i] << " " << INNER << std::endl;
-	  if (n_type[i] == INNER) { // || n_type[i] == HARD) {
+	  if (n_type[i] == INNER || n_type[i] == HARD) {
 	    coeff_item.clear();
 	    coeff_item.laplace(v_set, f_set, ring_1_v, ring_1_f, i, 1.0, REAL);
-	    if (n_type[i] == INNER) {
-	      coeff_item.own(i, (omega * omega) / (speed * speed), REAL);
-	    } else {
-	      coeff_item.own(i, (omega * omega) / (speed * speed) / 2, REAL);
-	    }
+	    coeff_item.own(i, (omega * omega) / (speed * speed), REAL);
 	    coeff_item.constance(0);
 	    coeff_mat.put(coeff_item);
 
 	    coeff_item.clear();
 	    coeff_item.laplace(v_set, f_set, ring_1_v, ring_1_f, i, 1.0, IMAG);
-	    if (n_type[i] == INNER) {
-	      coeff_item.own(i, (omega * omega) / (speed * speed), IMAG);
-	    } else {
-	      coeff_item.own(i, (omega * omega) / (speed * speed) / 2, IMAG);
-	    }
-	    //coeff_item.own(i, (omega * omega) / (speed * speed), IMAG);
+	    coeff_item.own(i, (omega * omega) / (speed * speed), IMAG);
 	    coeff_item.constance(0);
 	    coeff_mat.put(coeff_item);
 	  }
@@ -267,10 +262,10 @@ void pipeline(const std::string default_config_file,
 #ifdef LOG
 	std::cout << "  outlet part : ";
 #endif
-	// outlet boundary: \grad p dot norm + j * (omega / speed) * p = 0
-	// let p = a + b * j, omega / speed = c
-	// then we have real part: \grad a dot norm - c * b = 0
-	// and imaginary part: \grad b dot norm + c * a = 0
+	// outlet boundary: \grad p dot norm + j * wavenum * p + j * rho / (2*wavenum) * \surface_laplace p = 0
+	// let p = a + b * j, wavenum = c, rho / (2*wavenum) = d
+	// then we have real part: \grad a dot norm - c * b - d * \surface_laplace b = 0
+	// and imaginary part: \grad b dot norm + c * a + d * \surface_laplace a = 0
 	for (int i = 0; i < f_type.size(); i++) {
 		if (f_type[i] == OUTLET) 
 		  {
@@ -279,13 +274,15 @@ void pipeline(const std::string default_config_file,
 		  
 		    coeff_item.clear();
 		    coeff_item.gradient_dot_norm(v, f, 1.0, REAL);
-		    coeff_item.average(v, -1 * omega / speed, IMAG);
+		    coeff_item.average(v, -wavenum, IMAG);
+		    coeff_item.surface_laplace(f_set, surface_node_near_f, -rho / (2*wavenum), IMAG);
 		    coeff_item.constance(0);
 		    coeff_mat.put(coeff_item);
 
 		    coeff_item.clear();
 		    coeff_item.gradient_dot_norm(v, f, 1.0, IMAG);
 		    coeff_item.average(v, omega / speed, REAL);
+		    coeff_item.surface_laplace(f_set, surface_node_near_f, rho / (2*wavenum), REAL);
 		    coeff_item.constance(0);
 		    coeff_mat.put(coeff_item);
 		  }
