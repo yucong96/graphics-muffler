@@ -6,6 +6,7 @@ const int VOLUME_NODE_NUM = 4;
 
 const double TOLERANCE = 1e-5;
 const double PI = 3.1415926;
+const double INF = 1e10;
 
 const double DEFAULT_FREQ = 300;
 const double DEFAULT_SPEED = 340;
@@ -15,12 +16,14 @@ const int ERR_FILE_OPEN = 1;
 const int ERR_FILE_FORMAT = 2;
 const int ERR_WRONG_ARG_NUMBER = 3;
 
-#define TEST
-#define LOG
+const int AREA_NORMALIZE = 0;
+const int UNIT_NORMALIZE = 1;
+
+//#define TEST
+//#define LOG
 #define LINUX
 // #define WINDOWS
 
 #define NORMAL
-// #define TEST_LAPLACE
 
 #endif

@@ -11,21 +11,27 @@
 
 class CoeffItem {
 private:
-  UtilTools& utiltools;
+  bool coeffitem_inited;
+  const UtilTools* tools;
   int n_num;
-  std::map<NodeIndex, double> coeff;
-  double constant;
 
-private:
+  std::map<NodeIndex, double> coeff;
+  std::vector<double> constant;
+
+ private:
   void insert(NodeIndex n, double coefficient);
   void insert(NodeIndex n, double coefficient, const int flag);
 
  public:
+  CoeffItem(const int _node_num, const UtilTools* _tools);
+  CoeffItem();
+  void set_nodenum_and_tools(const int _node_num, const UtilTools* _tools);
+
   friend class CoeffMatrix;
-  CoeffItem(const int _node_num, UtilTools& _utiltools);
+  
   void clear();
   void gradient_dot_norm(const Volume &v, const Face &surf_f,
-                         const double multiplier, const int flag = REAL);
+                         const double multiplier, const int is_normalize, const int flag = REAL);
   void average(const Volume &v, const double multiplier, const int flag = REAL);
   void laplace(const std::vector<Volume> &v_set, const std::vector<Face> &f_set,
                const std::vector< std::set<VolumeIndex> > &ring_1_v,
@@ -33,7 +39,7 @@ private:
                const NodeIndex &n, const double multiplier, const int flag = REAL);
   void surface_laplace(const std::vector<Face> &f_set, const std::vector<std::set<FaceIndex>> &surface_node_near_f, const NodeIndex &n, const double multiplier, const int flag = REAL);
   void own(const NodeIndex& n, const double multiplier, const int flag = REAL);
-  void constance(const double _constant);
+  void add_constant(const double _constant);
 };
 
 #endif

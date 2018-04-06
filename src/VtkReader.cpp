@@ -76,9 +76,10 @@ int VtkReader::getData(const string &filename,
 
 	input.close();
 
+#ifdef LOG
 	cout << "n_set: " << n_set.rows() << endl;
 	cout << "v_set: " << v_set.size() << endl;
-
+#endif
 	return 0;
 }
 
@@ -89,8 +90,10 @@ int VtkReader::writeData(const string& filename, Matrix<double, Dynamic, 3>& n_s
   }
 
   int n_num = n_set.rows();
-  double result_max = 2.0;
-  double result_min = -2.0;
+  //  double result_max = result.maxCoeff();
+  //  double result_min = result.minCoeff();
+  double result_max = 1;
+  double result_min = -1;
   assert(result_max != NAN && result_min != NAN);
   assert(result_max != INFINITY && result_min != INFINITY);
   assert(result_max != result_min);

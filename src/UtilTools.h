@@ -7,11 +7,14 @@
 
 class UtilTools {
 private:
-  const int n_num;
-  const Eigen::Matrix<double, Eigen::Dynamic, 3> &n_set;
+  bool utiltools_inited;
+  const Eigen::Matrix<double, Eigen::Dynamic, 3> *n_set;
 
-public:
-  UtilTools(const Eigen::Matrix<double, Eigen::Dynamic, 3> &_n_set, const int _n_num);
+ public:
+  UtilTools(const Eigen::Matrix<double, Eigen::Dynamic, 3> *_n_set);
+  UtilTools();
+
+  void set_model(const Eigen::Matrix<double, Eigen::Dynamic, 3> *_n_set);
 
   Eigen::Vector3d norm_vec(const Face &f) const;
   Eigen::Vector3d norm_vec(const Face &f, const NodeIndex &n) const;
